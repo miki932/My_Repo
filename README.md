@@ -1,0 +1,1 @@
+funny game just for learning pygame library
