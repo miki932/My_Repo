@@ -1,1 +1,6 @@
-venv/
+# virtualenv
+/.venv
+/venv
+
+#idea
+.idea
