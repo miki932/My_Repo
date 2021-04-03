@@ -1,5 +1,7 @@
 import pygame
 import os
+pygame.font.init()
+pygame.mixer.init()
 
 
 TITLE = pygame.display.set_caption("Pio Pio Game")
@@ -29,3 +31,10 @@ RED_HIT = pygame.USEREVENT + 2
 
 RED_HEALTH = 10
 YELLOW_HEALTH = 10
+
+HEALTH_FONT = pygame.font.SysFont('comicsans', 40)
+WINNER_FONT = pygame.font.SysFont('comicsans', 100)
+
+BULLET_FIRE_SOUND = pygame.mixer.Sound(os.path.join('Assets', 'Gun+Silencer.mp3'))
+BULLET_HIT_SOUND = pygame.mixer.Sound(os.path.join('Assets', 'Grenade+1.mp3'))
+WINNING_SOUND = pygame.mixer.Sound(os.path.join('Assets', 'tada.mp3'))

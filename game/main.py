@@ -5,6 +5,12 @@ import constants as con
 def draw_window(red, yellow, red_bullets, yellow_bullets, red_health, yellow_health):
     con.WINDOW.blit(con.SPACE, (0,0))
     pygame.draw.rect(con.WINDOW, con.BLACK, con.BORDER)
+
+    red_health_text = con.HEALTH_FONT.render("HEALTH: " + str(red_health), 1, con.WHITE)
+    yellow_health_text = con.HEALTH_FONT.render("HEALTH: " + str(yellow_health), 1, con.WHITE)
+    con.WINDOW.blit(red_health_text, (con.WIDTH - red_health_text.get_width() - 10, 10))
+    con.WINDOW.blit(yellow_health_text, (10, 10))
+
     con.WINDOW.blit(con.YELLOW_SPACESHIP, (yellow.x, yellow.y))
     con.WINDOW.blit(con.RED_SPACESHIP, (red.x, red.y))
 
@@ -15,6 +21,13 @@ def draw_window(red, yellow, red_bullets, yellow_bullets, red_health, yellow_hea
         pygame.draw.rect(con.WINDOW, con.YELLOW, bullet)
 
     pygame.display.update()
+
+
+def winner(text):
+    draw_text = con.WINNER_FONT.render(text, 1, con.WHITE)
+    con.WINDOW.blit(draw_text, (con.WIDTH/2 - draw_text.get_width() / 2, con.HEIGHT / 2 - draw_text.get_height() / 2))
+    pygame.display.update()
+    pygame.time.delay(5000)
 
 
 def yellow_handle_movement(keys_pressed, yellow):
@@ -73,30 +86,37 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-
+                pygame.quit()
+            # Fire bullets of yellow spaceship
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LSHIFT and len(yellow_bullets) < con.MAX_BULLETS: #YELLOW BULLET
                     bullet = pygame.Rect(yellow.x + yellow.width, yellow.y + yellow.height // 2 - 2, 10, 5)
                     yellow_bullets.append(bullet)
-
+                    con.BULLET_FIRE_SOUND.play()
+                #Fire bullets of red spaceship
                 if event.key == pygame.K_RSHIFT and len(red_bullets) < con.MAX_BULLETS: #RED BULLET
                     bullet = pygame.Rect(red.x , red.y + red.height // 2 - 2, 10, 5)
                     red_bullets.append(bullet)
-
+                    con.BULLET_FIRE_SOUND.play()
+            #Health of users
             if event.type == con.RED_HIT:
                 red_health -= 1
+                con.BULLET_HIT_SOUND.play()
             if event.type == con.YELLOW_HIT:
                 yellow_health -= 1
-
+                con.BULLET_HIT_SOUND.play()
+        #Winning title
         winner_text = ""
-        if red_health <= 0:
+        if red_health == 0:
+            winner_text = "yellow Wins !"
+
+        if yellow_health == 0:
             winner_text = "Red Wins !"
 
-        if yellow_health <= 0:
-            winner_text = "Yellow Wins !"
-
         if winner_text != "":
-            pass
+            con.WINNING_SOUND.play()
+            winner(winner_text)
+            break
 
         keys_pressed = pygame.key.get_pressed()
         yellow_handle_movement(keys_pressed, yellow)
@@ -104,7 +124,7 @@ def main():
         handle_bullets(yellow_bullets, red_bullets, yellow, red)
         draw_window(red, yellow, red_bullets, yellow_bullets, red_health, yellow_health)
 
-    pygame.quit()
+    main() #Restarting the game after someone win
 
 
 if __name__ == "__main__":
