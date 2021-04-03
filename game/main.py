@@ -1,5 +1,5 @@
 import pygame
-import constants as con
+from game import constants as con
 
 
 def draw_window(red, yellow, red_bullets, yellow_bullets, red_health, yellow_health):
@@ -123,7 +123,7 @@ def main():
         red_handle_movement(keys_pressed, red)
         handle_bullets(yellow_bullets, red_bullets, yellow, red)
         draw_window(red, yellow, red_bullets, yellow_bullets, red_health, yellow_health)
-
+    #TODO: ask the user if he want to restart the game
     main() #Restarting the game after someone win
 
 
