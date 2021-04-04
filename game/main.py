@@ -1,5 +1,26 @@
 import pygame
+import random
 from game import constants as con
+
+
+star_field_slow = []
+star_field_medium = []
+star_field_fast = []
+
+for slow_stars in range(50): #birth those plasma balls, baby
+    star_loc_x = random.randrange(0, con.WIDTH)
+    star_loc_y = random.randrange(0, con.HEIGHT)
+    star_field_slow.append([star_loc_x, star_loc_y]) #i love your balls
+
+for medium_stars in range(35):
+    star_loc_x = random.randrange(0, con.WIDTH)
+    star_loc_y = random.randrange(0, con.HEIGHT)
+    star_field_medium.append([star_loc_x, star_loc_y])
+
+for fast_stars in range(15):
+    star_loc_x = random.randrange(0, con.WIDTH)
+    star_loc_y = random.randrange(0, con.HEIGHT)
+    star_field_fast.append([star_loc_x, star_loc_y])
 
 
 def draw_window(red, yellow, red_bullets, yellow_bullets, red_health, yellow_health):
@@ -123,6 +144,33 @@ def main():
         red_handle_movement(keys_pressed, red)
         handle_bullets(yellow_bullets, red_bullets, yellow, red)
         draw_window(red, yellow, red_bullets, yellow_bullets, red_health, yellow_health)
+
+        # animate some motherfucking stars
+        for star in star_field_slow:
+            star[1] += 1
+            if star[1] > con.HEIGHT:
+                star[0] = random.randrange(0, con.WIDTH)
+                star[1] = random.randrange(-20, -5)
+            pygame.draw.circle(con.SPACE, con.DARKGREY, star, 3)
+
+        for star in star_field_medium:
+            star[1] += 4
+            if star[1] > con.HEIGHT:
+                star[0] = random.randrange(0, con.WIDTH)
+                star[1] = random.randrange(-20, -5)
+            pygame.draw.circle(con.SPACE, con.LIGHTGREY, star, 2)
+
+        for star in star_field_fast:
+            star[1] += 8
+            if star[1] > con.HEIGHT:
+                star[0] = random.randrange(0, con.WIDTH)
+                star[1] = random.randrange(-20, -5)
+            pygame.draw.circle(con.SPACE, con.YELLOW, star, 1)
+
+        # redraw everything we've asked pygame to draw
+        pygame.display.update()
+        pygame.display.flip()
+
     #TODO: ask the user if he want to restart the game
     main() #Restarting the game after someone win
 
